@@ -16,23 +16,13 @@
         <!--[if lt IE 7]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
-            <form method='POST' action="">
-                {% csrf_token %}
-                <table>
-                    <tr>
-                        <td>{{ form.username.label_tag }}</td>
-                        <td>{{ form.username }}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ form.password.label_tag }}</td>
-                        <td>{{ form.password }}</td>
-                    </tr>
-                    </table>
-                    
-                    <input type="submit" value="login">
-
-                {{ form.errors }}
-
-            </form>
+            rejestracja
+        <form method='POST' action="">
+            {% csrf_token %}
+            {{form.as_p}}
+            
+            <input type="submit" value="register">
+        </form>
+        <script src="" async defer></script>
     </body>
 </html>

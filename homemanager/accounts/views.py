@@ -1,11 +1,23 @@
-from django.shortcuts import render
-from django.http import HttpResponse
-from django.views import View
+# from django.shortcuts import render
+from django.urls import reverse_lazy
 from django.contrib.auth.views import LoginView
+from django.contrib.auth.models import User
+from django.views.generic import CreateView
+from .forms import UserCreateForm
 # Create your views here.
 
 
-#class Login(LoginView):
-#    template_name = 'accounts/login.html'
+class MyLoginView(LoginView):
+    template_name = 'accounts/login.html'
+
+
+class UserCreateView(CreateView):
+    model = User
+    form_class = UserCreateForm
+    template_name = 'accounts/register.html'
+    success_url = reverse_lazy('warehouse:home')
+    
+
+
 
 
