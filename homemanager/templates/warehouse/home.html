@@ -6,12 +6,10 @@
         <ul>
             {% for home in object_list %}
         <li>
-            {{ home.name }}
+           <a href={% url 'warehouse:home_detail' home.pk %}> {{ home.name }} </a>
         </li>
     </ul>
             {% endfor %}
     </div>
-
-
 
 {% endblock %}
