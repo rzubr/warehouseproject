@@ -1,6 +1,6 @@
 # from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.models import User
 from django.views.generic import CreateView
 from .forms import UserCreateForm
@@ -18,6 +18,8 @@ class UserCreateView(CreateView):
     success_url = reverse_lazy('warehouse:home')
     
 
+class MyLogoutView(LogoutView):
+    pass
 
 
 

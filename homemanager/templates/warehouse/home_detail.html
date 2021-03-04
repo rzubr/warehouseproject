@@ -1,0 +1,28 @@
+{% extends 'base/base.html' %}
+{% block content %}
+
+    <p>
+    {{home.name}}
+    </p> </n>
+
+        <p>
+    kategorie
+
+    <li>
+        {% for category in categories %}
+        <ul>
+          <b> {{ category }} </b> 
+        </ul>
+            {% for product in category.product_set.all %}
+           <ul>{{ product.name }}</ul> 
+            {% endfor %}
+        {% endfor %}
+    </li>
+    
+    
+    
+    
+    </p> </n>
+
+
+{% endblock %}

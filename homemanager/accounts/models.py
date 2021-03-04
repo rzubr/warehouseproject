@@ -14,7 +14,3 @@ class Client(models.Model):
         return str(self.first_name + " " + self.last_name)
     
 
-class Home(models.Model):
-    client = models.ManyToManyField(Client)
-    name = models.CharField(max_length=64, blank=False, null=False)
-    
