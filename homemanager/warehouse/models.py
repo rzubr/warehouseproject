@@ -26,7 +26,7 @@ class Category(models.Model):
 class Product(models.Model):
     name = models.CharField(max_length=64, blank=False, null=False)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    quantity = models.DecimalField(max_digits=16, decimal_places=3, null=True)
+    quantity = models.DecimalField(max_digits=16, decimal_places=3, null=True, blank=True)
     new_quantity = models.DecimalField(max_digits=16, decimal_places=3, default=0, null=True)
     unit = models.CharField(max_length=32, blank=False, null=False)
     stock = models.CharField(max_length=64, blank=False, null=False, default='Full')

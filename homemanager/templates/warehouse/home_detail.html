@@ -1,28 +1,116 @@
 {% extends 'base/base.html' %}
+{% load static %}
 {% block content %}
 
-    <p>
-    {{home.name}}
-    </p> <br/>
 
-        <p>
-    kategorie
-
-    <li>
-        {% for category in categories %}
-        <ul>
-          <b> {{ category }} </b> 
-        </ul>
-            {% for product in category.product_set.all %}
-           <ul>{{ product.name }}</ul> 
-            {% endfor %}
+    {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
         {% endfor %}
-    </li>
+    {% endif %}
     
-    
-    
-    
-    </p> </n>
+<h1 class='display-4 form-weight-normal'> {{home.name}} </h1>
+<!-- Trigger add category form -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addCategoryModal">
+  Add new category
+</button>
+<!-- Table with all categories and products -->
+    <div class=''>
+        <table class="table">
+        {% for category in categories %}
+                    
+            <th colspan="5" scope='col'> <h3> {{ category }} {{ category.pk }} </h3> </th>
+                <form method='POST'>
+                {% csrf_token %}
+                    </tr>
+                        <th>New product name</th>
+                        <th>quantity</th>
+                        <th>and unit</th>
+                    </tr>
+                    <tr>
+                        <th>{{product_form.name}}</th> 
+                        <input type="hidden" name="category" value={{category.pk}}>
+                        <th>{{product_form.new_quantity}}</th>
+                        <th>{{product_form.unit}}</th> 
+                        <th><input name='product_add' type='submit' value='Add'> </th>
+                    </tr>
+                </form>
+        
+                <tr style='hidden'>
+                    <th scope="col">Name</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Stock status</th>
+                </tr>
+            
+            {% for product in category.product_set.all %}
 
+                <tr id='productRow_{{product.id}}'>
+                    <td> {{ product.name }} <button>Edit</button> </td>
+                    <td> {{ product.quantity }} {{ product.unit }} </td>
+                    <td> {{ product.stock }} </td>
+                </tr>
+
+            {% endfor %}
+
+        {% endfor %}
+
+        </table>
+    </div>
+
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+        crossorigin="anonymous"></script>
+
+
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content"></div>
+  </div>
+</div>
+
+
+<div>
+
+</div>
+
+<!-- Create product button -->
+
+
+
+
+<!-- Modal -->
+
+<div class="modal fade" id="addCategoryModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <form method='POST'>
+    {% csrf_token %}
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Add category</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            {{category_form}}
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <input name='category_add' type="submit" class="btn btn-primary" value="Add category">
+        </div>
+        </div>
+    </div>
+  </form>
+</div>
+
+
+<script src="{% static 'js/home_detail.js' %}">
 
 {% endblock %}
