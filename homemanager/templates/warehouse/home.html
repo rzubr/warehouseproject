@@ -1,15 +1,61 @@
-{% extends 'base/base.html' %}
-{% block content %}
 
-    <div>
-        <h3>Your Homes:</h3>
-        <ul>
+{% extends 'base/base.html' %}
+{% load static %}
+{% block content %}
+    <hr>
+
+    <h1>HOME LIST</h1>
+
+    <div class="row">
+
             {% for home in object_list %}
-        <li>
-           <a href={% url 'warehouse:home_detail' home.pk %}> {{ home.name }} </a>
-        </li>
-    </ul>
-            {% endfor %}
+        <div class="col-sm-4">
+           <a class="btn btn-dark col-sm-12" href={% url 'warehouse:home_detail' home.pk %}> {{ home.name }} </a>
+        </div>
+        <div class="col-sm-2">
+            <button id={{home.pk}} name="edit-home-button">Edit</button>
+        </div>
+        <div class="col-sm-2">
+            <a class='btn btn-danger' href="{% url 'warehouse:delete_home' home.pk %} ">DELETE</a>
+        </div>
+        <div class="col-sm-2">
+            <a href="{% url 'warehouse:leave_home' pk=home.pk userpk=request.user.pk %}" class="btn btn-outline-danger">Leave home</a>
+        </div><hr>
+            
+        <div id="edit-home-form-{{home.pk}}" class="row">
+            <form method="POST" action="{% url 'warehouse:update_home' home.pk %}">
+                {% csrf_token %}
+                <input type="text" name="name" maxlength="64" value="{{home.name}}" required_id="id_name">
+                <input type="submit" value="Save changes">
+            </form>
+        </div>
+        {% endfor %}
     </div>
+    <div class="row">
+
+    {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        {% endfor %}
+    {% endif %}
+
+        <h2>ADD NEW HOME</h2>
+        <form method="POST" action="{% url 'warehouse:create_home' %}">
+            {% csrf_token %}
+            <div class='col-sm-4'>
+                {{home_form}}
+                <input class="btn btn-primary" type="submit" value="ADD">
+            </div>
+         </form>
+        
+    </div>
+
+<script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+<script src="{% static 'js/home.js' %}"></script>
 
 {% endblock %}

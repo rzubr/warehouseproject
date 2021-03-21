@@ -6,7 +6,7 @@ from django.urls import reverse
 
 
 class Home(models.Model):
-    name = models.CharField(max_length=64, blank=False, null=False, unique=True)
+    name = models.CharField(max_length=64, blank=True, null=True, unique=False)
     client = models.ManyToManyField(Client)
 
     def __str__(self):

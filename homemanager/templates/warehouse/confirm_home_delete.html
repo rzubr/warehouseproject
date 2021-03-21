@@ -1,0 +1,13 @@
+{% extends 'base/base.html' %}
+{% block content %}
+
+
+<form method="post">{% csrf_token %} 
+<div class="alert alert-danger" role="alert">
+    <p>Are you sure you want to delete "{{ object }}"? it will remove all history about your products</p> 
+    <input type="submit" value="Confirm"> 
+</div>
+</form> 
+
+
+{% endblock %}
