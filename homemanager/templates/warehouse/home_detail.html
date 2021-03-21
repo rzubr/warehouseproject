@@ -13,77 +13,158 @@
         </div>
         {% endfor %}
     {% endif %}
-    
+
+
+<br>
 <h1 class='display-4 form-weight-normal'> {{home.name}} </h1>
 <!-- Trigger add category form -->
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addCategoryModal">
   Add new category
 </button>
-<!-- Table with all categories and products -->
-    <div class=''>
-        <table class="table">
-        {% for category in categories %}
-                    
-            <th colspan="5" scope='col'> <h3> {{ category }} {{ category.pk }} </h3> </th>
-                <form method='POST'>
+<hr>
+
+<div class="container">
+{% for category in categories %}
+    <!-- First row with category name and display form button -->
+    <div class="row">
+        <div class="col-sm-8 d-flex">
+            <div class="w-25">
+                <h3>{{ category }}</h3>
+            </div>
+            <div class="w-25">
+                <button id="{{category.pk}}" class="btn btn-light col-sm-12 edit-category-btn">EDIT</button>
+            </div>
+            <div>
+                <a class='btn btn-danger' href="{% url 'warehouse:delete_category' category.pk %}">DELETE</a>
+            </div>
+        </div>
+        <div id="add-category-form-{{category.pk}}" class="col-sm-4">
+            <button id="{{category.pk}}" type='button' 
+            class="btn btn-info display-category-form-button">Add product to this category</button>
+        </div>
+    <div style="display:none" id="edit-category-{{category.pk}}" class="row">
+        <div><br>
+            <form method="POST" action="{% url 'warehouse:update_category' category.pk %}">
                 {% csrf_token %}
-                    </tr>
-                        <th>New product name</th>
-                        <th>quantity</th>
-                        <th>and unit</th>
-                    </tr>
-                    <tr>
-                        <th>{{product_form.name}}</th> 
-                        <input type="hidden" name="category" value={{category.pk}}>
-                        <th>{{product_form.new_quantity}}</th>
-                        <th>{{product_form.unit}}</th> 
-                        <th><input name='product_add' type='submit' value='Add'> </th>
-                    </tr>
-                </form>
-        
-                <tr style='hidden'>
-                    <th scope="col">Name</th>
-                    <th scope="col">Quantity</th>
-                    <th scope="col">Stock status</th>
-                </tr>
-            
-            {% for product in category.product_set.all %}
+                <label for="id_name">New category name:</label>
+                <input type="text" name="name" required_id="id_name" maxlength="64" value="{{category.name}}">
+                <select style="display:none" name="home" required_id="id_home">
+                    <option value="{{category.home.pk}}" selected></option>
+                </select>
+                <input type="submit" value="Update category name">
+            </form>
 
-                <tr id='productRow_{{product.id}}'>
-                    <td> {{ product.name }} <button>Edit</button> </td>
-                    <td> {{ product.quantity }} {{ product.unit }} </td>
-                    <td> {{ product.stock }} </td>
-                </tr>
-
-            {% endfor %}
-
-        {% endfor %}
-
-        </table>
+        </div>
     </div>
+    </div>
+    <hr>
+    <!-- Second hidden row with form heading-->
+    <div style="display:none" id="add-product-to-{{category.pk}}">
+        <div class="row">
+            <div class="col-sm-5">
+                New product name
+            </div>
+            <div class="col-sm-3">
+                quantity
+            </div>
+            <div class="col-sm-3">
+                and unit
+            </div>
+        </div>
+    <!-- Third row with add product form -->
+    <form method="POST">
+        {% csrf_token %}
+        <div class="row">
+ 
+            <div class="col-sm-5">
+                {{product_form.name}}
+                <input type="hidden" name="category" value={{category.pk}}>
+            </div>
+            <div class="col-sm-3">
+                {{product_form.new_quantity}}
+            </div>
+            <div class="col-sm-2">
+                {{product_form.unit}}
+            </div>
+            <div class="col-sm-2">
+                <input name='product_add' type='submit' value='Add'>
+            </div>
+            
+        </div> 
+    </form>
+    </div>
+    <!-- fourt row - products heading -->
+    <div class="row">
+        <div class="col-sm">
+            Name
+        </div>
+        <div class="col-sm">
+            Quantity
+        </div>
+        <div class="col-sm">
+            Stock status
+        </div>
+    </div>
+    <hr>
+    <!-- Details of every product in each category -->
+    {% for product in category.product_set.all %}
+    <!-- Row with product details -->
+    <div class="row">
+        <div class="col-sm-4 d-flex">
+            <div class="w-50">
+                {{ product.name }}
+            </div>
+            <div class="w-50">
+                <button id="{{product.pk}}" type="button" class="btn btn-outline-dark col-12 edit-product-btn">EDIT</button>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            {{ product.quantity }} {{ product.unit }}
+        </div>
+        <div class="col-sm-3">
+            {{ product.stock }}
+        </div>
+        <div class="col-sm-1">
+            <a class='btn btn-outline-danger' href="{% url 'warehouse:delete_product' product.pk %} ">DELETE </a>
 
+        </div>
+        <br><br>
+    </div>
+    <!-- custom form for product update with preset values based on current products -->
+    <div class="row">
+        <div id="product-edit-div-{{product.id}}" style="display:none" class="">
+            <h3>Update product {{product.name}}</h3>
+            <div>
+                <form action="{% url 'warehouse:update_product' product.pk %}" method="POST">
+                    {% csrf_token %}
+                    <label for="id_name">Name:</label>
+                    <input type="text" name="name" maxlength="64" required_id="id_name" value="{{product.name}}">
+                    
+                    <select name="category" required_id="id_category">
+                        <option value="{{product.category.pk}}" selected>{{product.category.name}}</option>
+                        {% for category in categories %}
+                            
+                            <option value="{{category.pk}}">{{category.name}}</option>
+                            
+                        {% endfor %}
+                    </select>
+                    <label for="id_new_quantity">Quantity:</label>
+                    <input type="number" name="new_quantity" step="0.01" required_id="id_new_quantity" value="{{product.quantity}}">
 
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
-        crossorigin="anonymous"></script>
+                    <label for="id_unit">Units:</label>
+                    <input type="text" name="unit" maxlength="12" required_id="id_unit" value="{{product.unit}}">
+                    <!-- {{product_form.category}} -->
+                    <input type="submit" value='test'>
+                </form>
+            </div><br>
+        </div>
+    </div> 
 
+    {% endfor %}
+    <hr><hr><hr>
 
-
-    <div class="modal fade" tabindex="-1" role="dialog" id="modal">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content"></div>
-  </div>
+{% endfor %}
 </div>
-
-
-<div>
-
-</div>
-
-<!-- Create product button -->
-
-
-
 
 <!-- Modal -->
 
@@ -110,7 +191,11 @@
   </form>
 </div>
 
+<script>
+    var totalCategories = "{{categories.count}}";
+</script>
 
-<script src="{% static 'js/home_detail.js' %}">
+<script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+<script src="{% static 'js/home_detail.js' %}"></script>
 
 {% endblock %}

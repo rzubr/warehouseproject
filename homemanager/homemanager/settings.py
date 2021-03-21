@@ -130,3 +130,4 @@ STATICFILES_DIRS = [
 
 LOGIN_REDIRECT_URL = 'warehouse:home'
 LOGOUT_REDIRECT_URL = 'warehouse:home'
+LOGIN_URL = 'accounts:login'

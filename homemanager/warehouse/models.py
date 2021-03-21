@@ -1,5 +1,6 @@
 from django.db import models
 from accounts.models import Client
+from django.urls import reverse
 
 # Create your models here.
 
@@ -7,8 +8,12 @@ from accounts.models import Client
 class Home(models.Model):
     name = models.CharField(max_length=64, blank=False, null=False, unique=True)
     client = models.ManyToManyField(Client)
+
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse("warehouse:home_detail", kwargs={"pk": self.pk})
     
 
 class Category(models.Model):
@@ -21,7 +26,7 @@ class Category(models.Model):
     class Meta: 
         verbose_name_plural = 'categories'
         unique_together = ('name', 'home')
-    
+
 
 class Product(models.Model):
     name = models.CharField(max_length=64, blank=False, null=False)
