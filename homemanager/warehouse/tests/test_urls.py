@@ -2,7 +2,7 @@
 # from django.urls import reverse, resolve
 # from warehouse.views import (HomeView, HomeDetailsView, DeleteProductView, 
 #     DeleteCategoryView, UpdateProductView, UpdateCategoryView, CreateHomeView,
-#     UpdateHomeView, DeleteHomeView, remove_from_home)
+#     UpdateHomeView, DeleteHomeView, LeaveHomeView)
 
 # class TestUrls(SimpleTestCase):
 
@@ -25,7 +25,7 @@
 
 #     def test_leave_home_url(self):
 #         url = reverse('warehouse:leave_home', args=['2','3'])
-#         self.assertEquals(resolve(url).func, remove_from_home)
+#         self.assertEquals(resolve(url).func.view_class, LeaveHomeView)
 
 #     #category urls test
 #     def test_delete_category_url(self):

@@ -42,20 +42,41 @@
           </button>
         </div>
         {% endfor %}
-    {% endif %}
+    {% endif %}<hr> 
 
-        <h2>ADD NEW HOME</h2>
-        <form method="POST" action="{% url 'warehouse:create_home' %}">
-            {% csrf_token %}
-            <div class='col-sm-4'>
+    <div class='row'>
+        <div class=col-sm-6>
+            <h2>ADD NEW HOME</h2>
+            <form method="POST" action="{% url 'warehouse:create_home' %}">
+                {% csrf_token %}
                 {{home_form}}
                 <input class="btn btn-primary" type="submit" value="ADD">
-            </div>
-         </form>
+            </form>
+        </div>
+        <div class="col-sm-6">
+            <H2>Home invitations 
+                <button id='invitations-list-btn' class="badge bg-secondary"> {{ invitations.count }}</button>
+            </H2>
+                {% for invitation in invitations %}
+                    <div style="display:none" id='invitations-list' class="row">
+                        <div class="col-sm-5">
+                            From {{invitation.invite_from}} to: {{invitation.home}}
+                        </div>
+                        <div class="col-sm-7">
+                            <a href="{% url 'warehouse:accept_inv' invitation.pk %}" class="btn btn-primary">Accept</a>
+                            <a href="{% url 'warehouse:decline_inv' invitation.pk %}" class="btn btn-danger">Decline</a>
+                        </div>
+                    </div>
+                {% endfor %}
+
+        </div>
+    </div>
+
+
         
     </div>
 
 <script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
-{% comment %} <script src="{% static 'js/home.js' %}"></script> {% endcomment %}
+<script src="{% static 'js/home.js' %}"></script>
 
 {% endblock %}

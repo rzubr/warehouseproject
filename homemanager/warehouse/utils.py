@@ -21,7 +21,7 @@ class OwnershipMixin:
         if home in client_homes:
             return super().dispatch(request, *args, **kwargs)
         else:
-            messages.info(self.request, "ITS NOT YOUR PRODUCT")
+            messages.info(self.request, "ITS NOT YOUR PROPERTY")
             return HttpResponseRedirect(home.get_absolute_url())
 
 

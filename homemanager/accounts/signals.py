@@ -12,7 +12,6 @@ def client_profile(sender, instance, created, **kwargs):
             email = instance.email,
             last_name = ' - '
         )
-        print('client created'),
 
 post_save.connect(client_profile, sender=User)
 

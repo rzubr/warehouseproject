@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
+
 class Client(models.Model):
     user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=64, blank=True, null=True, verbose_name='Imie')
@@ -13,4 +14,12 @@ class Client(models.Model):
     def __str__(self):
         return str(self.first_name + " " + self.last_name)
     
+    def is_invited(self, home):
+        invitation_home = home.homeinvitation_set.filter(
+                          invite_to=self
+            )
+        if invitation_home.exists():
+            return True
+        else: 
+            return False
 

@@ -16,12 +16,55 @@
 
 
 <br>
-<h1 class='display-4 form-weight-normal'> {{home.name}} </h1>
-<!-- Trigger add category form -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addCategoryModal">
-  Add new category
-</button>
+<div class='row'>
+    <div class='col-sm-6'>
+        <h1 class='display-4 form-weight-normal'> {{home.name}} </h1>
+        <!-- Trigger add category form -->
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addCategoryModal">
+        Add new category
+        </button>
+    </div>
+        <div class='col-sm-6'>
+            <h3>Invites sent
+            <span class='badge bg-dark'> {{invites.count}} </span></h3>
+            <div class='row'>
+                <div class='col-sm-4'>
+                    Sent to
+                </div>
+                <div class='col-sm-4'>
+                    Date
+                </div>
+            </div>
+            {% for invite in invites %}
+            <div class='row'>
+                <div class='col-sm-4'>
+                    {{invite.invite_to}}
+                </div>
+                <div class='col-sm-4'>
+                    {{invite.invite_date}}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
 <hr>
+</div>
+<!-- Home invitation section, get clients and invite -->
+<div class='row'>
+    <div class="fomr-group row">
+        <div class="col-sm-2">
+            <input type="text" class="form-control" id="client-first-name" placeholder="First name">
+        </div>
+        <div class="col-sm-2">
+            <input type="text" class="form-control" id="client-last-name" placeholder="Last name">
+        </div>
+        <div class="col-sm-4">
+            <button class='btn btn-secondary' id="get-clients-btn">SEARCH PERSON TO INVITE</button>
+        </div>
+    </div>
+    <div id='fetched-clients'>
+
+    </div>
+</div><hr>
 
 <div class="container">
 {% for category in categories %}
@@ -194,7 +237,11 @@
 <script>
     var totalCategories = "{{categories.count}}";
 </script>
-
+<script>
+    var clients_url = '{% url "warehouse:get_clients" %}';
+    var home = "{{home.pk}}"
+    var base_url = "{% url 'warehouse:home' %}"
+</script>
 <script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
 <script src="{% static 'js/home_detail.js' %}"></script>
 
