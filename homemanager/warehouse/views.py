@@ -4,7 +4,6 @@ from django.views.generic.detail import DetailView
 from django.contrib import messages
 
 from django.core import serializers
-from django.db.models import Q
 
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -120,7 +119,6 @@ class UpdateProductView(LoginRequiredMixin, OwnershipMixin, View):
             form.save()
             messages.info(self.request, "Product updated")
         else:
-            print(form.errors)
             messages.info(self.request, "Form incorrect")
         return HttpResponseRedirect(product.category.home.get_absolute_url())
 
@@ -180,14 +178,8 @@ class GetClients(LoginRequiredMixin, View):
         #Remove already invited clients
         home = Home.objects.get(pk=self.request.user.client.pk)
         home_invites = HomeInvitation.objects.filter(home=home)
-        print(home_invites)
         new_list = clients.exclude(invited_client__in=home_invites).order_by('first_name')[:50]
         client_list = list(new_list.values())
-        # for index, client in enumerate(client_list):
-        #     cl = Client.objects.get(pk=client['id'])
-        #     if cl.is_invited:
-        #         client_list.pop(index)
-                
         return JsonResponse(client_list, safe=False)
 
 

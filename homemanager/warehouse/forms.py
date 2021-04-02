@@ -1,6 +1,5 @@
 #Django imports
 from django import forms
-from bootstrap_modal_forms.forms import BSModalModelForm
 
 #Project imports
 from .models import Home, Product, Category

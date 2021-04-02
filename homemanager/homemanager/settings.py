@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'accounts.apps.AccountsConfig',
     'warehouse',
-    'bootstrap_modal_forms',
+    'shoppinglist',
 ]
 
 MIDDLEWARE = [

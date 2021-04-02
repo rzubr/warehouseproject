@@ -1,0 +1,40 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block content %}
+
+
+<div class='row'>
+    <H2>SHOPPING LIST</H2>
+</div>
+
+
+<div class="row">
+    <div class='col-sm-4'>
+        NAME:
+    </div>
+    <div class='col-sm-2'>
+        COMPLETE
+    </div>
+
+    <div class='col-sm-2'>
+        DELETE
+    </div>
+
+    <div id="requested-products-list">
+
+    </div>
+
+</div>
+
+<script>
+    let base_url = "{% url 'shopping_list:shopping_list' homepk=home.pk listpk=shopping_list.pk %}}"
+    let base_delete_product_url = base_url.substring(0, base_url.length-4) + 'delete_list_product/'
+    let base_status_change_url = base_url.substring(0, base_url.length-4) + 'change_product_status/'
+    var home_pk = "{{ home.pk }}"
+    var list_pk = "{{ shopping_list.pk }}"
+    var products_url = `{% url 'shopping_list:get_products' homepk=home.pk listpk=shopping_list.pk %}`
+</script>
+<script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+<script src="{% static 'js/shoppinglist/shopping_list.js' %}"></script>
+
+{% endblock %}
